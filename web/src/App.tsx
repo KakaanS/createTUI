@@ -9,6 +9,7 @@ import { EmployersForm } from "./components/EmployersForm"
 import { ArtPicker } from "./components/ArtPicker"
 import { PlatformPicker } from "./components/PlatformPicker"
 import { LocalRunCommand } from "./components/LocalRunCommand"
+import { Hero } from "./components/Hero"
 import { buildBundle, triggerDownload } from "./bundle"
 import { DEFAULT_PLATFORM, getPlatform, type PlatformId } from "./platforms"
 
@@ -70,8 +71,10 @@ export default function App() {
   return (
     <FormProvider {...methods}>
       <div className="max-w-3xl mx-auto px-4 py-8">
-        <header className="mb-8">
-          <h1 className="text-2xl font-bold text-hot">tui-cv-builder</h1>
+        <Hero />
+
+        <header className="mb-8" id="builder">
+          <h2 className="text-2xl font-bold text-hot">Build your CV</h2>
           <p className="text-sm text-muted mt-1">
             Fill in the form. Then either{" "}
             <strong>copy the one-line install command</strong> at the bottom to try the TUI on

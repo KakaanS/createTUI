@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "build:deploy": "node scripts/fetch-binaries.mjs && tsc -b && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "fetch-binaries": "node scripts/fetch-binaries.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
