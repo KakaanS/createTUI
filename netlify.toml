@@ -2,9 +2,9 @@
 # ignored by the build context.
 [build]
   base = "web"
-  command = "npm ci && npm run build:deploy"
+  command = "bun install --frozen-lockfile && bun run build:deploy"
   publish = "dist"
 
 [build.environment]
-  # Vite 6 needs Node 18+.
+  # Vite 6 needs Node 18+. Netlify's build image ships bun preinstalled.
   NODE_VERSION = "20"

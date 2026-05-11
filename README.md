@@ -41,8 +41,8 @@ go run .              # uses template/cv.json
 
 ```sh
 cd web
-npm install
-npm run dev
+bun install
+bun dev
 ```
 
 For the **Generate** button to work locally, drop a built binary for *each platform you want to offer* into `web/public/`. The web app fetches them by name:
@@ -69,13 +69,13 @@ mv ../web/public/ssh-cv-darwin-amd64 ../web/public/ssh-cv-macos-amd64
 mv ../web/public/ssh-cv-darwin-arm64 ../web/public/ssh-cv-macos-arm64
 ```
 
-If you'd rather skip the local cross-compile, `npm run fetch-binaries` pulls them from the GitHub Releases tag `latest` (set `SSH_CV_REPO=owner/name` if your repo URL isn't in `package.json`).
+If you'd rather skip the local cross-compile, `bun run fetch-binaries` pulls them from the GitHub Releases tag `latest` (set `SSH_CV_REPO=owner/name` if your repo URL isn't in `package.json`).
 
 ## Deploying the web app (Netlify / Vercel)
 
-The static site is a Vite build that lives in `web/`. CI uploads the five binaries to a rolling `latest` GitHub Release; on each deploy, `npm run build:deploy` pulls them into `web/public/` so the deployed site can serve them. Config is committed:
+The static site is a Vite build that lives in `web/`. CI uploads the five binaries to a rolling `latest` GitHub Release; on each deploy, `bun run build:deploy` pulls them into `web/public/` so the deployed site can serve them. Config is committed:
 
-- `netlify.toml` — points Netlify at `web/` and runs `npm ci && npm run build:deploy`.
+- `netlify.toml` — points Netlify at `web/` and runs `bun install --frozen-lockfile && bun run build:deploy`.
 - `web/vercel.json` — same on Vercel. Set **Root Directory** to `web` once in the Vercel project UI.
 
 Deploy order on first launch:
@@ -88,7 +88,7 @@ On every subsequent push to `template/`, CI rebuilds the binaries and refreshes 
 
 ## Package manager
 
-The project uses **npm** (lockfile: `package-lock.json`). A stale `bun.lock` is present in `web/` from earlier experimentation — safe to delete if you're not using bun.
+The project uses **bun** (lockfile: `bun.lock`). Bun's install is dramatically faster than npm and the lockfile is committed for reproducible builds. If you don't have bun: `curl -fsSL https://bun.sh/install | bash` (macOS/Linux) or see [bun.sh](https://bun.sh).
 
 ## Inspiration
 
