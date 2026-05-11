@@ -41,8 +41,8 @@ go run .              # uses template/cv.json
 
 ```sh
 cd web
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
 For the **Generate** button to work locally, drop a built binary for *each platform you want to offer* into `web/public/`. The web app fetches them by name:
@@ -69,7 +69,26 @@ mv ../web/public/ssh-cv-darwin-amd64 ../web/public/ssh-cv-macos-amd64
 mv ../web/public/ssh-cv-darwin-arm64 ../web/public/ssh-cv-macos-arm64
 ```
 
-(Production deploys fetch each binary from the GitHub Releases tag `latest` — see the workflow.)
+If you'd rather skip the local cross-compile, `npm run fetch-binaries` pulls them from the GitHub Releases tag `latest` (set `SSH_CV_REPO=owner/name` if your repo URL isn't in `package.json`).
+
+## Deploying the web app (Netlify / Vercel)
+
+The static site is a Vite build that lives in `web/`. CI uploads the five binaries to a rolling `latest` GitHub Release; on each deploy, `npm run build:deploy` pulls them into `web/public/` so the deployed site can serve them. Config is committed:
+
+- `netlify.toml` — points Netlify at `web/` and runs `npm ci && npm run build:deploy`.
+- `web/vercel.json` — same on Vercel. Set **Root Directory** to `web` once in the Vercel project UI.
+
+Deploy order on first launch:
+
+1. Push to `main`. Wait for the **Build ssh-cv binaries** workflow to go green — that creates the `latest` release with all five assets.
+2. Trigger the Netlify / Vercel deploy. The prebuild step `fetch-binaries` will succeed because the release now exists.
+3. (Optional) Set `SSH_CV_REPO=<owner>/<repo>` as an env var in the Netlify / Vercel UI. Netlify and Vercel both autodetect the repo via their own env vars, but the explicit override is safer for forks / renames.
+
+On every subsequent push to `template/`, CI rebuilds the binaries and refreshes the release; the next site deploy picks them up. Pushes that only touch `web/` skip the binary rebuild but still re-deploy the site against the existing release assets.
+
+## Package manager
+
+The project uses **npm** (lockfile: `package-lock.json`). A stale `bun.lock` is present in `web/` from earlier experimentation — safe to delete if you're not using bun.
 
 ## Inspiration
 

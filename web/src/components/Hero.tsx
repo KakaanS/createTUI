@@ -31,7 +31,7 @@ export function Hero() {
 
       <div className="text-center mt-8 mb-4">
         <p className="text-base md:text-lg text-muted italic">
-          Don't know what SSH is? Then maybe my CV isn't for you.
+          Don't know what SSH is? Then maybe my CV isen't for you. ;D
         </p>
       </div>
 
