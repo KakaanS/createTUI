@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    @apply h-full;
+  }
+  body {
+    @apply bg-ink text-zinc-100 font-mono antialiased;
+  }
+}
+
+@layer components {
+  .field {
+    @apply flex flex-col gap-1;
+  }
+  .label {
+    @apply text-xs uppercase tracking-wider text-muted;
+  }
+  .input {
+    @apply bg-panel border border-zinc-800 rounded px-3 py-2 text-sm focus:outline-none focus:border-accent;
+  }
+  .btn {
+    @apply px-3 py-2 rounded border border-zinc-800 bg-panel hover:bg-zinc-800/60 text-sm transition;
+  }
+  .btn-primary {
+    @apply bg-accent border-accent hover:bg-accent/80;
+  }
+  .btn-danger {
+    @apply text-red-400 hover:bg-red-950/40 hover:border-red-900;
+  }
+  .panel {
+    @apply bg-panel border border-zinc-800 rounded-lg p-4;
+  }
+  .section-title {
+    @apply text-sm font-bold text-hot uppercase tracking-wider mb-3;
+  }
+  .err {
+    @apply text-xs text-red-400;
+  }
+}

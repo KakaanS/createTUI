@@ -1,0 +1,42 @@
+{
+  "contact": {
+    "name": "Jane Doe",
+    "role": "Software Engineer",
+    "phone": "+46 70 000 00 00",
+    "email": "jane@example.com"
+  },
+  "about": "This is the About section. Replace it with a paragraph or two about who you are, what you do, and what you're looking for.\n\nGenerated with tui-cv-builder.",
+  "art": "    ╔══════════════════╗\n    ║  Terminal CV     ║\n    ║    powered by    ║\n    ║   Bubble Tea     ║\n    ╚══════════════════╝",
+  "skills": [
+    "Go",
+    "TypeScript",
+    "React",
+    "Docker",
+    "PostgreSQL"
+  ],
+  "employers": [
+    {
+      "name": "Example Tech AB",
+      "location": "Stockholm",
+      "type": "tech",
+      "period": "2024-01 - ongoing",
+      "projects": [
+        {
+          "slug": "example-project",
+          "name": "Example Project",
+          "period": "2024-01 - 2024-06",
+          "description": "A short description of the project, what you built, and the impact it had.",
+          "technologies": ["Go", "TypeScript", "Docker"]
+        }
+      ]
+    },
+    {
+      "name": "Earlier Job AB",
+      "location": "Göteborg",
+      "type": "non-tech",
+      "period": "2020-01 - 2022-12",
+      "role": "Sales Representative",
+      "description": "Description of a previous non-tech role. Useful to keep context about your background outside engineering."
+    }
+  ]
+}

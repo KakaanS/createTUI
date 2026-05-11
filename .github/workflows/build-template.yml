@@ -1,0 +1,81 @@
+name: Build ssh-cv binaries
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "template/**"
+      - ".github/workflows/build-template.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            asset: ssh-cv-linux-amd64
+          - goos: linux
+            goarch: arm64
+            asset: ssh-cv-linux-arm64
+          - goos: darwin
+            goarch: amd64
+            asset: ssh-cv-macos-amd64
+          - goos: darwin
+            goarch: arm64
+            asset: ssh-cv-macos-arm64
+          - goos: windows
+            goarch: amd64
+            asset: ssh-cv-windows-amd64.exe
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: template/go.mod
+          cache-dependency-path: template/go.sum
+
+      - name: Build ${{ matrix.goos }}/${{ matrix.goarch }}
+        working-directory: template
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          go build -ldflags="-s -w" -trimpath -o "../${{ matrix.asset }}" .
+          ls -la "../${{ matrix.asset }}"
+          file "../${{ matrix.asset }}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: ${{ matrix.asset }}
+          retention-days: 90
+
+      - name: Update rolling release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest ssh-cv
+          body: |
+            Auto-built `ssh-cv` binaries from the latest `template/` sources.
+
+            | Platform | Asset |
+            |---|---|
+            | Linux x86_64 (VPS default) | `ssh-cv-linux-amd64` |
+            | Linux ARM64 | `ssh-cv-linux-arm64` |
+            | macOS Intel | `ssh-cv-macos-amd64` |
+            | macOS Apple Silicon | `ssh-cv-macos-arm64` |
+            | Windows x86_64 | `ssh-cv-windows-amd64.exe` |
+
+            Download an asset with: `curl -L -o ssh-cv https://github.com/${{ github.repository }}/releases/download/latest/<asset-name>`
+          files: ${{ matrix.asset }}
+          prerelease: false
+          make_latest: "true"

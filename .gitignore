@@ -1,0 +1,21 @@
+# Build artifacts
+ssh-cv
+ssh-cv-*
+*.zip
+
+# Web
+web/node_modules
+web/dist
+web/.vite
+
+# Pre-built binary lives in GitHub Releases, not in git
+web/public/ssh-cv
+
+# Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Env
+.env
+.env.local
